@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/login.css">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -21,7 +21,7 @@
     <script src="https://use.fontawesome.com/2a236ea976.js"></script>
     <link rel="icon" href="assets/images/logo.png">
 </head>
-<body>
+<body onload="checkCookie()">
 <div class="header">
     <div class="menu-bar">
         <nav class="navbar navbar-expand-lg navbar-light">
@@ -32,29 +32,28 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
-                        <a class="nav-link px-3" href="https://rosiettan.github.io/Pellicula/">Home</a>
+                        <a class="nav-link px-3" href="main.html">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link px-3" href="https://rosiettan.github.io/pellicula_about/">About</a>
+                        <a class="nav-link px-3" href="page.html">About</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link px-3" href="https://rosiettan.github.io/pellicula_events/">Events</a>
+                        <a class="nav-link px-3" href="events.html">Events</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link px-3" href="https://rosiettan.github.io/pellicula_movies/">Movies</a>
+                        <a class="nav-link px-3" href="movies.html">Movies</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link px-3" href="https://rosiettan.github.io/pellicula_signup/">Sign up</a>
+                        <a class="nav-link px-3" href="signup.html">Sign up</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link px-3" href="#">Login</a>
+                        <a class="nav-link px-3" href="login_page.html">Login</a>
                     </li>
                 </ul>
             </div>
         </nav>
     </div>
 </div>
-
 <<div id="form-main">
   <div id="form-div">
     <form class="form" id="form1">
@@ -62,15 +61,74 @@
       <p class="name">
         <input name="name" type="text" class=" feedback-input" placeholder="Username" required="required" id="name" />
       </p>
-      
+
       <p class="password">
         <input name="text" class=" feedback-input" id="password" placeholder="Password" required="required" type="password"></input>
       </p>
-      
-      
+
+
       <div class="submit">
         <button type="submit" value="Enter" id="button-blue" onclick="validateForm()">Enter</button>
-        
+          <br>
+          <br>
+          <br>
+          <br>
+          <script type = "text/javascript">
+              var days = 730; // the cookie will expire = 2 years
+              var lastvisit=new Object();
+              var firstvisitmsg="<b>This is your first visit to this page.</b> <b>Welcome!</b>";
+              lastvisit.subsequentvisitmsg="<p style='font-size:18px;color: bisque'><b>Your last visit was on</b> <b style='font-size:18px; color:#072f36;'>[date_displayed]</b>";
+
+              lastvisit.getCookie=function(Name){
+                  var re=new RegExp(Name+"=[^;]+", "i");
+                  if (document.cookie.match(re))
+                      return document.cookie.match(re)[0].split("=")[1];
+                  return'';
+              }
+
+              lastvisit.setCookie=function(name, value, days){
+                  var expireDate = new Date();
+
+                  var expstring=expireDate.setDate(expireDate.getDate()+parseInt(days));
+                  document.cookie = name+"="+value+"; expires="+expireDate.toGMTString()+"; path=/";
+              }
+
+              lastvisit.showmessage = function() {
+                  var wh = new Date();
+                  if (lastvisit.getCookie("visit_record") == "") {
+                      lastvisit.setCookie("visit_record", wh, days);
+                      document.write(firstvisitmsg);
+                  }
+
+                  else {
+                      var lv = lastvisit.getCookie("visit_record");
+                      var lvp = Date.parse(lv);
+                      var now = new Date();
+                      now.setTime(lvp);
+                      var month = new Array ("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
+                      var dd = now.getDate();
+                      var mn = now.getMonth();
+                      mn = month[mn];
+                      yy = now.getFullYear();
+                      var hh = now.getHours();
+                      var ampm = "AM";
+                      if (hh >= 12) {ampm = "PM"}
+                      if (hh >12){hh = hh - 12};
+                      if (hh < 10) {hh = "0" + hh};
+                      var mins = now.getMinutes();
+                      if (mins < 10) {mins = "0"+ mins}
+                      var secs = now.getSeconds();
+                      if (secs < 10) {secs = "0" + secs}
+                      var dispDate =   mn + " " + dd + ", " + yy + " " + hh + ":" + mins + ":" + secs + " " + ampm
+                      document.write(lastvisit.subsequentvisitmsg.replace("\[date_displayed\]", dispDate))
+                  }
+
+                  lastvisit.setCookie("visit_record", wh, days);
+
+              }
+
+              lastvisit.showmessage();
+          </script>
       </div>
     </form>
   </div>
@@ -90,7 +148,7 @@
             document.documentElement.scrollTop = 0;
         }
         function validateForm() {
-            
+
     const username = document.getElementById('name')
     const email = document.getElementById('email')
     const password = document.getElementById('password')
@@ -99,14 +157,51 @@
     alert("Username is required");
     return false;
     }
-   
+
     else if(password==null || password == ''){
     alert("password is required");
     return false;
     }
 }
     </script>
+    <script>
+    function setCookie(cname,cvalue,exdays) {
+        const d = new Date();
+        d.setTime(d.getTime() + (exdays*24*60*60*1000));
+        let expires = "expires=" + d.toUTCString();
+        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+    }
 
+    function getCookie(cname) {
+        let name = cname + "=";
+        let decodedCookie = decodeURIComponent(document.cookie);
+        let ca = decodedCookie.split(';');
+        for(let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) == ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) {
+                return c.substring(name.length, c.length);
+            }
+        }
+        return "";
+    }
+
+    function checkCookie() {
+        let user = getCookie("username");
+        if (user != "") {
+            alert("Welcome again " + user);
+        } else {
+            user = prompt("Please enter your name:","");
+            if (user != "" && user != null) {
+                setCookie("username", user, 30);
+            }
+        }
+    }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
 </body>
 </html>
 
